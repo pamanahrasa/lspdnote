@@ -66,7 +66,7 @@
         @media print {
             @page { margin: 1cm; }
             body { background-color: #fff !important; color: #000 !important; overflow: visible !important; height: auto !important; }
-            aside, header, .print-btn, #toast { display: none !important; }
+            aside, header, .print-btn, #toast, #mobile-bottom-nav { display: none !important; }
             main { background: none !important; padding: 0 !important; overflow: visible !important; display: block !important; }
             .page-content { display: none !important; }
             .page-content.active { display: block !important; animation: none !important; }
@@ -281,7 +281,7 @@
                             </div>
                         </div>
 
-                        <!-- 10-Codes List (Adjusted to exact specifications) -->
+                        <!-- 10-Codes List -->
                         <div class="bg-lspd-dark rounded-xl shadow-lg border border-slate-700 overflow-hidden">
                             <div class="bg-lspd-card px-4 py-3 border-b border-slate-700">
                                 <h3 class="font-bold text-white"><i class="fa-solid fa-list-ol text-lspd-gold mr-2"></i> Ten-Codes</h3>
@@ -1088,8 +1088,36 @@
                                 </div>
                                 <div class="space-y-3">
                                     <input type="date" id="gen-date" class="w-full bg-slate-800 border border-slate-600 text-slate-400 text-xs px-3 py-2 rounded focus:border-lspd-gold focus:outline-none" oninput="generateBBCode()">
-                                    <textarea id="gen-details" placeholder="Tuliskan detail kronologi patroli di sini..." class="w-full h-24 bg-slate-800 border border-slate-600 text-white text-xs px-3 py-2 rounded resize-none focus:border-lspd-gold focus:outline-none" oninput="generateBBCode()"></textarea>
-                                    <input type="text" id="gen-evidence" placeholder="Link Barang Bukti/Gambar (Pisahkan dengan koma jika lebih dari 1)" class="w-full bg-slate-800 border border-slate-600 text-white text-xs px-3 py-2 rounded focus:border-lspd-gold focus:outline-none" oninput="generateBBCode()">
+                                    <textarea id="gen-details" placeholder="Ceritakan kronologi kejadian secara naratif (5W+1H). Masukkan info detail seperti nama suspect/korban, model/warna kendaraan, plat nomor, lokasi, waktu, dan tindakan officer. Sistem akan otomatis menebalkan (bold) informasi penting tersebut." class="w-full h-32 bg-slate-800 border border-slate-600 text-white text-xs px-3 py-2 rounded resize-none focus:border-lspd-gold focus:outline-none" oninput="generateBBCode()"></textarea>
+                                    
+                                    <!-- ADVANCED MULTIPLE EVIDENCE SECTION -->
+                                    <div class="mt-4 p-4 bg-slate-900/80 rounded-lg border border-slate-700 shadow-inner w-full">
+                                        <h3 class="text-lspd-gold text-xs font-bold mb-1 flex items-center">
+                                            <i class="fa-solid fa-camera mr-2"></i> Evidence / Dokumentasi
+                                        </h3>
+                                        <p class="text-[10px] text-slate-400 mb-3 leading-relaxed">
+                                            Masukkan nama bukti deskriptif (Cth: <strong class="text-slate-300">Vehicle, Suspect ID/Mugshot, Suspect Inventory, Crime Scene, Hostage/Victim, dll.</strong>). Sistem akan membuat format spoiler forum otomatis.
+                                        </p>
+                                        <div id="evidence-container" class="space-y-3">
+                                            <!-- Evidence Item Row -->
+                                            <div class="evidence-item flex flex-col sm:flex-row gap-2 bg-slate-950 p-2.5 rounded border border-slate-800 relative items-start sm:items-center shadow-sm">
+                                                <div class="flex-1 w-full">
+                                                    <label class="block text-[9px] uppercase tracking-wider font-bold text-slate-500 mb-1">Evidence Name</label>
+                                                    <input type="text" oninput="generateBBCode()" class="ev-name w-full bg-slate-800 text-white px-2 py-1.5 rounded border border-slate-600 focus:border-lspd-gold focus:outline-none text-xs placeholder-slate-600" placeholder="Cth: Vehicle Damage">
+                                                </div>
+                                                <div class="flex-1 w-full">
+                                                    <label class="block text-[9px] uppercase tracking-wider font-bold text-slate-500 mb-1">Image URL</label>
+                                                    <input type="text" oninput="generateBBCode()" class="ev-url w-full bg-slate-800 text-white px-2 py-1.5 rounded border border-slate-600 focus:border-lspd-gold focus:outline-none text-xs placeholder-slate-600" placeholder="https://example.com/image.png">
+                                                </div>
+                                                <button type="button" onclick="removeEvidenceField(this)" class="mt-4 sm:mt-0 sm:self-end text-slate-500 hover:text-red-400 transition p-1.5 hidden btn-remove-ev" title="Hapus Baris">
+                                                    <i class="fa-solid fa-trash text-sm"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="addEvidenceField()" class="mt-3 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded text-[10px] font-bold transition flex items-center border border-slate-600 shadow-sm">
+                                            <i class="fa-solid fa-plus mr-1.5 text-lspd-gold"></i> Tambah Kolom Bukti
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1153,7 +1181,7 @@
                                     
                                     <div class="bg-[#11224E] text-white font-bold p-2 text-center text-sm uppercase tracking-wide mb-4">
                                         Los Santos Police Department
-                                        </div>
+                                    </div>
                                     
                                     <div class="text-center font-bold text-sm mb-4 border-b pb-2 text-slate-900">
                                         PATROL REPORT
@@ -1189,10 +1217,8 @@
                                         </p>
                                         <p class="mt-2"><strong>Evidence:</strong></p>
                                         <div class="mt-1 space-y-1">
-                                            <details class="bg-white border rounded text-[9px] p-1 cursor-pointer" open><summary class="font-bold text-blue-600">Spoiler: 10-60</summary><span class="text-slate-400 text-[8px] italic ml-2">Image: https://i.imgur.com/n2HziOd.png</span></details>
-                                            <details class="bg-white border rounded text-[9px] p-1 cursor-pointer"><summary class="font-bold text-blue-600">Spoiler: 10-61</summary><span class="text-slate-400 text-[8px] italic ml-2">Image: https://i.imgur.com/UM21nO0.jpeg</span></details>
-                                            <details class="bg-white border rounded text-[9px] p-1 cursor-pointer"><summary class="font-bold text-blue-600">Spoiler: 10-61</summary><span class="text-slate-400 text-[8px] italic ml-2">Image: https://i.imgur.com/wRVBA4G.png</span></details>
-                                            <details class="bg-white border rounded text-[9px] p-1 cursor-pointer"><summary class="font-bold text-blue-600">Spoiler: Possessions</summary><span class="text-slate-400 text-[8px] italic ml-2">Image: https://i.imgur.com/Yi1RKMj.png</span></details>
+                                            <details class="bg-white border rounded text-[9px] p-1 cursor-pointer" open><summary class="font-bold text-blue-600">Spoiler: Vehicle Damage</summary><span class="text-slate-400 text-[8px] italic ml-2">Image: https://i.imgur.com/n2HziOd.png</span></details>
+                                            <details class="bg-white border rounded text-[9px] p-1 cursor-pointer"><summary class="font-bold text-blue-600">Spoiler: Suspect Inventory</summary><span class="text-slate-400 text-[8px] italic ml-2">Image: https://i.imgur.com/UM21nO0.jpeg</span></details>
                                         </div>
                                     </div>
                                 </div>
@@ -1416,6 +1442,89 @@
             }
         }
 
+        // Auto-Formatter for Chronology (5W + 1H)
+        function autoFormatDetails(text) {
+            let res = text;
+            
+            // Clean existing bold tags to prevent nesting issues
+            res = res.replace(/\[\/?b\]/gi, ''); 
+            
+            // 1. Time (HH:MM)
+            res = res.replace(/\b((?:[01]?[0-9]|2[0-3]):[0-5][0-9])\b/g, '[b]$1[/b]');
+            
+            // 2. Dates (DD/MM/YYYY or similar)
+            res = res.replace(/\b(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})\b/g, '[b]$1[/b]');
+
+            // 3. Roles and Names (Officer, Suspect, Victim, Hostage)
+            res = res.replace(/\b(Officer(?:s)?|Suspect(?:s)?|Victim(?:s)?|Hostage(?:s)?)(?:,)?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\b/gi, function(match, p1, p2) {
+                let hasComma = match.includes(',');
+                return p1 + (hasComma ? ', ' : ' ') + '[b]' + p2 + '[/b]';
+            });
+
+            // 4. "identified as Name" or "named Name"
+            res = res.replace(/\b(identified as|named)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\b/gi, '$1 [b]$2[/b]');
+
+            // 5. Vehicle Colors & Types/Models
+            res = res.replace(/\b((?:red|blue|black|white|grey|gray|silver|green|yellow|pink|orange|purple|brown)\s+(?:sedan|suv|coupe|motorcycle|truck|van|[A-Z][a-z]+))\b/gi, '[b]$1[/b]');
+
+            // 6. License Plates
+            res = res.replace(/\b(license plate|plat nomor|plate)\s+([A-Z0-9]{4,8})\b/gi, '$1 [b]$2[/b]');
+
+            // 7. Locations (Words following at, on, near, in front of)
+            res = res.replace(/\b(at|on|near|in front of)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+(?:Street|Ave|Avenue|Blvd|Boulevard|Road|Circus|Freeway|Highway|Alley|Way|Drive))?)\b/gi, '$1 [b]$2[/b]');
+
+            // 8. Actions and Crimes
+            const actions = [
+                'traffic stop', 'felony stop', 'reckless driving', 'running a red traffic light',
+                'brandishing a weapon', 'narcotics activity', 'fleeing', 'pursuit', 'evading',
+                'immobilized', 'neutralize', 'neutralized', 'taken into custody', 'secured the scene',
+                'transported', 'investigation', 'enforcement action', 'resisting arrest',
+                'robbery', 'shootout', 'opened fire', 'assault', 'arrested', 'arrest', 'citation', 
+                'cited', 'searched', 'search'
+            ];
+            
+            actions.forEach(action => {
+                const reg = new RegExp(`\\b(${action})\\b`, 'gi');
+                res = res.replace(reg, '[b]$1[/b]');
+            });
+
+            // Cleanup potential nested tags safely
+            res = res.replace(/\[b\]\s*\[b\]/gi, '[b]');
+            res = res.replace(/\[\/b\]\s*\[\/b\]/gi, '[/b]');
+
+            return res;
+        }
+
+        // Dynamic Evidence Multi-row Management
+        function addEvidenceField() {
+            const container = document.getElementById('evidence-container');
+            const firstRow = container.querySelector('.evidence-item');
+            
+            // Clone the first row as template
+            const newRow = firstRow.cloneNode(true);
+            
+            // Clear values in cloned elements
+            newRow.querySelector('.ev-name').value = '';
+            newRow.querySelector('.ev-url').value = '';
+            
+            // Show trash button on all dynamic rows except the very first one
+            const trashBtn = newRow.querySelector('.btn-remove-ev');
+            if (trashBtn) {
+                trashBtn.classList.remove('hidden');
+            }
+            
+            container.appendChild(newRow);
+            generateBBCode();
+        }
+
+        function removeEvidenceField(buttonElement) {
+            const row = buttonElement.closest('.evidence-item');
+            if (row) {
+                row.remove();
+                generateBBCode();
+            }
+        }
+
         // Generator BBCode Laporan Patroli
         function generateBBCode() {
             const name = document.getElementById('gen-name').value || 'Answer';
@@ -1431,16 +1540,27 @@
                 date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
             }
 
-            const details = document.getElementById('gen-details').value || '-';
-            const evidenceRaw = document.getElementById('gen-evidence').value;
+            const rawDetails = document.getElementById('gen-details').value;
+            const details = rawDetails.trim() ? autoFormatDetails(rawDetails) : '-';
 
-            // Proses link evidence koma separator menjadi spoiler
-            let evidenceBBCode = '-';
-            if(evidenceRaw.trim() !== '') {
-                const links = evidenceRaw.split(',').map(l => l.trim()).filter(l => l !== '');
-                if(links.length > 0) {
-                    evidenceBBCode = links.map(link => `[spoiler="Bukti"][img]${link}[/img][/spoiler]`).join('\n');
+            // Gather all entries from dynamic evidence inputs
+            const evidenceItems = document.querySelectorAll('.evidence-item');
+            let evidenceBBCode = '';
+
+            evidenceItems.forEach(item => {
+                const evName = item.querySelector('.ev-name').value.trim();
+                const evUrl = item.querySelector('.ev-url').value.trim();
+
+                if (evName && evUrl) {
+                    evidenceBBCode += `[spoiler=${evName}]\n[img]${evUrl}[/img]\n[/spoiler]\n\n`;
                 }
+            });
+
+            // Fallback if no evidence provided
+            if (!evidenceBBCode.trim()) {
+                evidenceBBCode = '-';
+            } else {
+                evidenceBBCode = evidenceBBCode.trim();
             }
 
             const template = `[divbox=white]
@@ -1480,7 +1600,7 @@ ${evidenceBBCode}
             document.getElementById('bbcode-template').value = template;
         }
 
-        // Copy BBCode Function
+        // Copy BBCode Function with execCommand fallback
         function copyBBCode() {
             const textarea = document.getElementById('bbcode-template');
             textarea.select();
