@@ -476,7 +476,7 @@
                                         <li>Turun dari mobil, jalan di sisi kiri menuju pintu sopir.</li>
                                         <li>Tunjukkan badge polisi dan perkenalkan diri.</li>
                                         <li>Minta ID & SIM. Jika menolak kasih ID, jelaskan alasan stop (contoh: speeding, broken tail light, dll).</li>
-                                        <li>Jika memberi ID & SIM, lanjut ke tahap berikutnya.</li>
+                                        <li>Jika memberi ID & SIM, lanjut to tahap berikutnya.</li>
                                     </ul>
                                 </div>
                                 <hr class="border-slate-700">
@@ -592,6 +592,171 @@
                                     <li>Tunggu di perimeter luar. Bentuk barikade jalan agar warga sipil yang tidak tahu tidak masuk ke zona peluru (Kill Zone).</li>
                                     <li>Setelah bantuan datang dan situasi mereda, mulai lakukan sterilisasi dan pencarian bukti (*search*) di TKP. Jika menemukan suspect tergeletak, segera lakukan evakuasi medis dan bawa ke **Sector A (Alta/MRPD)**. <strong class="text-red-400">Pastikan untuk melakukan uji GSR (Gunshot Residue) dan mengamankan bukti senjata (Take Evidence) terlebih dahulu!</strong></li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Cam SOP Section (Additive Addition) -->
+                    <div class="bg-lspd-dark border border-slate-700 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full px-6 py-4 flex justify-between items-center hover:bg-lspd-card transition focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-lg text-white"><i class="fa-solid fa-video text-blue-400 mr-3"></i>Prosedur & Integrasi Body Cam (ShareX & FiveManage)</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content bg-lspd-navy">
+                            <div class="p-6 text-slate-300 space-y-6 text-sm">
+                                <!-- Introduction -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-solid fa-circle-info mr-2"></i> 1. Introduction (Pendahuluan)</h4>
+                                    <p class="text-slate-400 leading-relaxed">
+                                        ShareX dapat digunakan sebagai alat pengumpul bukti digital / <strong>Body Cam Evidence Tool</strong> untuk mengambil screenshot secara cepat di dalam game GTA V Roleplay. Hasil tangkapan layar tersebut akan otomatis terunggah ke penyimpanan awan (cloud server) untuk menghasilkan tautan bukti (evidence links) instan yang sangat berguna untuk pengisian laporan patroli, penyelidikan kasus, laporan penangkapan (MDT), rekapitulasi insiden, serta aktivitas penegakan hukum lainnya.
+                                    </p>
+                                </div>
+                                
+                                <hr class="border-slate-700">
+
+                                <!-- Download ShareX -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-solid fa-download mr-2"></i> 2. Download ShareX</h4>
+                                    <p class="text-slate-400 mb-3">
+                                        Unduh dan pasang aplikasi ShareX versi terbaru melalui situs resmi untuk memulai konfigurasi perekaman bukti taktis:
+                                    </p>
+                                    <a href="https://getsharex.com/" target="_blank" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded text-xs transition duration-200 shadow-md">
+                                        <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Download ShareX Official
+                                    </a>
+                                </div>
+
+                                <hr class="border-slate-700">
+
+                                <!-- ShareX Setup Guide -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-solid fa-sliders mr-2"></i> 3. ShareX Setup Guide</h4>
+                                    <p class="text-slate-400 mb-3">
+                                        ShareX harus dikonfigurasi dengan benar terlebih dahulu sebelum dapat digunakan di dalam game agar tidak mengganggu performa dan proses pengambilan gambar berjalan instan. Silakan ikuti tutorial konfigurasi lengkap melalui video panduan berikut:
+                                    </p>
+                                    
+                                    <!-- Video Link / Info -->
+                                    <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-4 mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                        <div class="flex items-center">
+                                            <i class="fa-brands fa-youtube text-red-500 text-3xl mr-3"></i>
+                                            <div>
+                                                <h5 class="text-white font-bold text-sm">ShareX Setup Tutorial Video</h5>
+                                                <p class="text-[11px] text-slate-400">Tonton panduan konfigurasi otomatisasi link bukti.</p>
+                                            </div>
+                                        </div>
+                                        <a href="https://youtu.be/keuFt7FsVqo" target="_blank" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded flex items-center transition">
+                                            <i class="fa-solid fa-play mr-1.5"></i> Watch on YouTube
+                                        </a>
+                                    </div>
+                                    
+                                    <p class="text-xs text-slate-400 mb-2 font-semibold">Video tutorial tersebut mencakup pembahasan penting mengenai:</p>
+                                    <ul class="list-disc pl-5 space-y-1 text-xs text-slate-400">
+                                        <li><strong>Initial ShareX configuration</strong> — Pengaturan awal hotkey dan kompresi gambar.</li>
+                                        <li><strong>Automatic image uploads</strong> — Konfigurasi unggah otomatis ke server gambar setelah screenshot diambil.</li>
+                                        <li><strong>Generating image links</strong> — Pengaturan agar tautan langsung disalin otomatis ke clipboard.</li>
+                                        <li><strong>Efficient evidence collection workflow</strong> — Alur kerja cepat pengumpulan bukti tanpa perlu meminimalkan (alt-tab) game.</li>
+                                    </ul>
+                                </div>
+
+                                <hr class="border-slate-700">
+
+                                <!-- FiveManage Integration -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> 4. FiveManage Integration</h4>
+                                    <p class="text-slate-400 mb-3">
+                                        Untuk manajemen bukti yang lebih profesional dan terorganisir khusus bagi komunitas GTA V Roleplay, disarankan mengintegrasikan ShareX dengan layanan penyimpanan awan <strong>FiveManage</strong>.
+                                    </p>
+                                    <div class="bg-slate-900/60 p-4 rounded border border-slate-700 space-y-3 mb-4">
+                                        <div class="flex items-start">
+                                            <i class="fa-solid fa-check-double text-green-400 text-lg mr-3 mt-0.5"></i>
+                                            <div>
+                                                <strong class="text-white text-xs block">Kenapa Integrasi FiveManage Sangat Berguna?</strong>
+                                                <span class="text-xs text-slate-400">FiveManage menyediakan host gambar berkecepatan tinggi yang stabil, aman, dan dirancang khusus untuk menyimpan dokumentasi MDT, log kepolisian, dan bukti persidangan tanpa risiko tautan kedaluwarsa.</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <i class="fa-solid fa-circle-nodes text-blue-400 text-lg mr-3 mt-0.5"></i>
+                                            <div>
+                                                <strong class="text-white text-xs block">Peningkatan Efisiensi Bukti</strong>
+                                                <span class="text-xs text-slate-400">Mempermudah pelacakan seluruh log screenshot yang pernah diambil oleh Officer. Gambar yang terunggah dikelompokkan dengan rapi dan dapat diakses kapan saja dari dashboard web FiveManage.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <a href="https://docs.fivemanage.com/guides/integration/sharex" target="_blank" class="inline-flex items-center px-4 py-2 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded text-xs transition duration-200 shadow-md">
+                                        <i class="fa-solid fa-book mr-2"></i> FiveManage ShareX Integration Guide
+                                    </a>
+                                </div>
+
+                                <hr class="border-slate-700">
+
+                                <!-- Recommended Workflow -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-solid fa-arrow-down-short-wide mr-2"></i> 5. Recommended Workflow (Alur Kerja Rekomendasi)</h4>
+                                    <p class="text-slate-400 mb-4">Biasakan mengikuti 5 langkah berurutan ini untuk menjaga akurasi pendokumentasian bukti taktis di lapangan:</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                                        <div class="bg-slate-900/80 p-3 rounded border border-slate-700 text-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center font-bold mx-auto mb-2 text-xs">1</div>
+                                            <strong class="text-white text-xs block mb-1">Capture Evidence</strong>
+                                            <p class="text-[10px] text-slate-400">Ambil screenshot kejadian krusial di dalam game menggunakan hotkey ShareX.</p>
+                                        </div>
+                                        <div class="bg-slate-900/80 p-3 rounded border border-slate-700 text-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center font-bold mx-auto mb-2 text-xs">2</div>
+                                            <strong class="text-white text-xs block mb-1">Upload Auto</strong>
+                                            <p class="text-[10px] text-slate-400">ShareX mengunggah gambar tersebut secara otomatis ke server cloud (FiveManage).</p>
+                                        </div>
+                                        <div class="bg-slate-900/80 p-3 rounded border border-slate-700 text-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center font-bold mx-auto mb-2 text-xs">3</div>
+                                            <strong class="text-white text-xs block mb-1">Obtain Link</strong>
+                                            <p class="text-[10px] text-slate-400">Tautan gambar yang tergenerasi otomatis tersalin ke clipboard sistem Anda.</p>
+                                        </div>
+                                        <div class="bg-slate-900/80 p-3 rounded border border-slate-700 text-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center font-bold mx-auto mb-2 text-xs">4</div>
+                                            <strong class="text-white text-xs block mb-1">Insert Link</strong>
+                                            <p class="text-[10px] text-slate-400">Tempelkan (paste) tautan tersebut ke MDT, laporan patroli, atau forum LSPD.</p>
+                                        </div>
+                                        <div class="bg-slate-900/80 p-3 rounded border border-slate-700 text-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center font-bold mx-auto mb-2 text-xs">5</div>
+                                            <strong class="text-white text-xs block mb-1">Organize</strong>
+                                            <p class="text-[10px] text-slate-400">Gunakan format spoiler forum yang deskriptif untuk merapikan visual laporan.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="border-slate-700">
+
+                                <!-- Tips & Best Practices -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-regular fa-lightbulb mr-2"></i> 6. Tips & Best Practices</h4>
+                                    <ul class="space-y-2 text-xs text-slate-400">
+                                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-400 mr-2 mt-0.5"></i> <span><strong>Capture All Important Moments</strong> — Rekam setiap transaksi ilegal, penolakan perintah, penembakan, tabrakan, dan pemrosesan hak Miranda.</span></li>
+                                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-400 mr-2 mt-0.5"></i> <span><strong>Ensure Key Info is Visible</strong> — Pastikan nama tersangka (bila memungkinkan), plat nomor kendaraan target, serta lokasi radar jalan terlihat jelas dalam screenshot bukti.</span></li>
+                                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-400 mr-2 mt-0.5"></i> <span><strong>Before & After Shots</strong> — Ambil bukti kondisi sebelum intervensi taktis (misal: posisi kendaraan melanggar) dan setelah intervensi (misal: kendaraan setelah diderek).</span></li>
+                                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-400 mr-2 mt-0.5"></i> <span><strong>Logical Organization</strong> — Kelompokkan bukti di forum laporan menggunakan spoiler yang diberi nama spesifik (Cth: [spoiler=Sita Senjata] daripada [spoiler=Bukti 1]).</span></li>
+                                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-400 mr-2 mt-0.5"></i> <span><strong>Professional Standards</strong> — Selalu jaga kerapihan dokumentasi sebagai bukti otentik yang dapat dipertanggungjawabkan di persidangan (Court Trial).</span></li>
+                                    </ul>
+                                </div>
+
+                                <hr class="border-slate-700">
+
+                                <!-- Quick Links -->
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2"><i class="fa-solid fa-link mr-2"></i> 7. Quick Links (Tautan Cepat)</h4>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                        <a href="https://getsharex.com/" target="_blank" class="p-3 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 flex items-center justify-between transition group">
+                                            <span class="text-white font-medium group-hover:text-lspd-gold">ShareX Download</span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i>
+                                        </a>
+                                        <a href="https://youtu.be/keuFt7FsVqo" target="_blank" class="p-3 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 flex items-center justify-between transition group">
+                                            <span class="text-white font-medium group-hover:text-lspd-gold">ShareX Setup Tutorial</span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i>
+                                        </a>
+                                        <a href="https://docs.fivemanage.com/guides/integration/sharex" target="_blank" class="p-3 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 flex items-center justify-between transition group">
+                                            <span class="text-white font-medium group-hover:text-lspd-gold">FiveManage ShareX Integration Guide</span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
