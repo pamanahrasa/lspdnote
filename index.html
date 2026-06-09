@@ -59,6 +59,71 @@
         table tr { border-bottom: 1px solid #334155; }
         table tr:last-child { border-bottom: none; }
 
+        /* Scroll Indicator Wrapper & Overlay Fade Styles */
+        .scroll-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Edge Fades */
+        .scroll-fade-left { position: absolute; left: 0; top: 0; bottom: 0; width: 2.5rem; pointer-events: none; z-index: 5; background: linear-gradient(to right, rgba(0,0,0,0.4), transparent); transition: opacity 0.2s ease; border-top-left-radius: inherit; border-bottom-left-radius: inherit; }
+        .scroll-fade-right { position: absolute; right: 0; top: 0; bottom: 0; width: 2.5rem; pointer-events: none; z-index: 5; background: linear-gradient(to left, rgba(0,0,0,0.4), transparent); transition: opacity 0.2s ease; border-top-right-radius: inherit; border-bottom-right-radius: inherit; }
+        .scroll-fade-top { position: absolute; left: 0; right: 0; top: 0; height: 2.5rem; pointer-events: none; z-index: 5; background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent); transition: opacity 0.2s ease; border-top-left-radius: inherit; border-top-right-radius: inherit; }
+        .scroll-fade-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 2.5rem; pointer-events: none; z-index: 5; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); transition: opacity 0.2s ease; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit; }
+
+        /* Horizontal Indicators */
+        .scroll-indicator { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; transition: opacity 0.2s ease; pointer-events: none; }
+        .scroll-indicator.scroll-left { left: 0.75rem; }
+        .scroll-indicator.scroll-right { right: 0.75rem; }
+
+        /* Vertical Indicators */
+        .scroll-indicator-y { position: absolute; left: 50%; transform: translateX(-50%); z-index: 10; transition: opacity 0.2s ease; pointer-events: none; }
+        .scroll-indicator-y.scroll-top { top: 0.75rem; }
+        .scroll-indicator-y.scroll-bottom { bottom: 0.75rem; }
+
+        /* Buttons Base */
+        .scroll-indicator-btn, .scroll-indicator-btn-y { background-color: rgba(30, 41, 59, 0.95); border: 1px solid #334155; color: #eab308; border-radius: 9999px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
+        .scroll-indicator-btn { width: 1.75rem; height: 1.75rem; }
+        .scroll-indicator-btn-y { width: 2rem; height: 1.5rem; }
+
+        /* Global Main Scroll Indicators */
+        .global-scroll-indicator { position: fixed; right: 2rem; z-index: 45; transition: opacity 0.3s ease; }
+        .global-scroll-indicator.scroll-top { top: 6rem; }
+        .global-scroll-indicator.scroll-bottom { bottom: 5rem; }
+        .global-scroll-indicator .scroll-indicator-btn-y { width: 2.5rem; height: 2.5rem; font-size: 1.1rem; }
+
+        @media (max-width: 768px) {
+            .global-scroll-indicator { right: 1rem; }
+            .global-scroll-indicator.scroll-bottom { bottom: 4.5rem; }
+        }
+
+        /* Animations */
+        .bounce-y { animation: bounceY 2s infinite; }
+        @keyframes bounceY { 
+            0%, 100% { transform: translateX(-50%) translateY(0); } 
+            50% { transform: translateX(-50%) translateY(-4px); } 
+        }
+        .scroll-indicator-y.scroll-bottom.bounce-y { animation: bounceYdown 2s infinite; }
+        @keyframes bounceYdown { 
+            0%, 100% { transform: translateX(-50%) translateY(0); } 
+            50% { transform: translateX(-50%) translateY(4px); } 
+        }
+
+        /* Mobile Helper Text */
+        .scroll-helper {
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 0.5rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
         /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; background-color: #eab308; color: #0f172a; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 50; left: 50%; bottom: 30px; font-weight: bold; font-size: 14px; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
         #toast.show { visibility: visible; opacity: 1; }
@@ -244,7 +309,7 @@
 
                 <div class="mb-8">
                     <p class="text-slate-300 leading-relaxed bg-lspd-dark p-4 rounded-lg border-l-4 border-lspd-gold shadow">
-                        Komunikasi radio adalah senjata utama Anda. Informasi yang jelas, padat, dan akurat dapat menyelamatkan nyawa. Pelajari dan biasakan menggunakan Ten-Codes serta Phonetic Alphabet.
+                        Komunikasi radio adalah senjata utama Anda. Informasi yang jelas, padat, dan akurat dapat menyelamatkan nyawa. Pelajari dan biasakan menggunakan Ten-Codes, Sandi Callsign, serta Phonetic Alphabet.
                     </p>
                 </div>
 
@@ -255,35 +320,35 @@
                     <div class="space-y-8">
                         <!-- Struktur Pelaporan -->
                         <div class="bg-lspd-card rounded-xl p-6 border border-slate-700 shadow-lg">
-                            <h3 class="text-xl font-bold text-lspd-gold mb-4"><i class="fa-solid fa-tower-broadcast mr-2"></i> How to Use 10-Codes / Response Codes on Radio</h3>
+                            <h3 class="text-xl font-bold text-lspd-gold mb-4"><i class="fa-solid fa-tower-broadcast mr-2"></i> Penggunaan 10-Codes & Kode Respon di Radio</h3>
                             <div class="space-y-4 text-sm">
                                 <div class="bg-lspd-dark p-3 rounded border border-slate-600">
-                                    <strong class="text-white block mb-1 text-lspd-gold">Initial Reporting — Contoh:</strong> 
+                                    <strong class="text-white block mb-1 text-lspd-gold">Laporan Awal (Initial Reporting) — Contoh:</strong> 
                                     <span class="italic text-slate-300">"Dispatch, [callsign kalian] would be doing 10-55 situation on [nama jalan], 10-60 gonna be [deskripsi kendaraan] with [jumlah penumpang] occupants inside. Standby for future updates."</span>
                                 </div>
                                 <div class="bg-lspd-dark p-3 rounded border border-slate-600">
-                                    <strong class="text-white block mb-1 text-lspd-gold">Updating the Situation — Contoh:</strong> 
+                                    <strong class="text-white block mb-1 text-lspd-gold">Memperbarui Situasi (Updating) — Contoh:</strong> 
                                     <span class="italic text-slate-300 mb-2 block">"Dispatch, for the last 10-55 situation on [nama jalan], it's now changing into active 10-57 (pursuit). Requesting 10-78 (backup) on my 20 (location). Suspect is now heading [arah pelarian]."</span>
-                                    <strong class="text-white block mt-2 mb-1">Detail:</strong>
+                                    <strong class="text-white block mt-2 mb-1">Detail Arah:</strong>
                                     <span class="italic text-slate-300">"Suspect is now heading West on Vespucci Blvd, taking left on intersection, heading South on San Andreas Ave."</span>
                                 </div>
                                 <div>
-                                    <strong class="text-white block mb-2">Update structure:</strong>
+                                    <strong class="text-white block mb-2">Struktur Pembaruan Arah:</strong>
                                     <ul class="list-disc pl-5 text-slate-300 text-xs space-y-1">
-                                        <li><span class="text-blue-400 font-bold">Action (Tindakan)</span> — contoh: heading / belok kiri</li>
-                                        <li><span class="text-green-400 font-bold">Arah mata angin</span> — North / South / East / West</li>
-                                        <li><span class="text-yellow-400 font-bold">Nama jalan</span> — lokasi atau jalur</li>
-                                        <li><span class="text-purple-400 font-bold">Informasi tambahan (opsional)</span> — landmark, lalu lintas, deskripsi suspect</li>
+                                        <li><span class="text-blue-400 font-bold">Action (Tindakan)</span> — contoh: heading / belok kiri (turn left)</li>
+                                        <li><span class="text-green-400 font-bold">Arah Mata Angin</span> — North / South / East / West</li>
+                                        <li><span class="text-yellow-400 font-bold">Nama Jalan</span> — lokasi atau jalur jalan saat ini</li>
+                                        <li><span class="text-purple-400 font-bold">Info Tambahan</span> — landmark, kepadatan lalu lintas, deskripsi fisik suspect</li>
                                     </ul>
                                 </div>
                                 <div class="bg-slate-800 p-3 rounded border border-slate-600 mt-2">
-                                    <strong class="text-white block mb-1 border-b border-slate-600 pb-1">How to Use Callsign:</strong>
+                                    <strong class="text-white block mb-1 border-b border-slate-600 pb-1">Cara Mengucapkan Callsign:</strong>
                                     <p class="text-slate-300 text-xs mt-2 mb-1">Misal badge number Pamanahrasa itu <span class="text-lspd-gold font-bold">71102</span></p>
                                     <ul class="list-disc pl-5 text-slate-300 text-xs space-y-1">
                                         <li>Jika sendiri (lincoln): <strong class="text-white">71 Lincoln 102</strong></li>
                                         <li>Dengan partner (adam): <strong class="text-white">71 Adam 102</strong></li>
                                     </ul>
-                                    <p class="text-slate-400 text-[10px] mt-2 italic">*71 itu station kalian</p>
+                                    <p class="text-slate-400 text-[10px] mt-2 italic">*Angka 71 merujuk pada nomor divisi/stasiun tempat bertugas.</p>
                                 </div>
                             </div>
                         </div>
@@ -315,8 +380,8 @@
                                         <tr><td class="px-4 py-2 font-mono font-bold text-white">10-28</td><td class="px-4 py-2">Info plate / Informasi plat nomor kendaraan</td></tr>
                                         <tr><td class="px-4 py-2 font-mono font-bold text-white">10-29</td><td class="px-4 py-2">Checking Criminal Records / Cek catatan kriminal</td></tr>
                                         <tr><td class="px-4 py-2 font-mono font-bold text-white text-orange-400">10-31A</td><td class="px-4 py-2 text-orange-400">House Robbery / Perampokan Rumah</td></tr>
-                                        <tr><td class="px-4 py-2 font-mono font-bold text-white text-orange-400">10-31B</td><td class="px-4 py-2 text-orange-400">Store Robbery in Progress</td></tr>
-                                        <tr><td class="px-4 py-2 font-mono font-bold text-white text-red-400">10-32</td><td class="px-4 py-2 text-red-400 font-bold">Man with Firearms / Orang Bersenjata</td></tr>
+                                        <tr><td class="px-4 py-2 font-mono font-bold text-white text-orange-400">10-31B</td><td class="px-4 py-2 text-orange-400 font-bold">Store Robbery in Progress</td></tr>
+                                        <tr><td class="px-4 py-2 font-mono font-bold text-white text-red-400 font-bold">10-32</td><td class="px-4 py-2 text-red-400 font-bold">Man with Firearms / Orang Bersenjata</td></tr>
                                         <tr><td class="px-4 py-2 font-mono font-bold text-white text-purple-400">10-34</td><td class="px-4 py-2 text-purple-400">Suspicious Behaviour (Narcotics)</td></tr>
                                         <tr><td class="px-4 py-2 font-mono font-bold text-white">10-37</td><td class="px-4 py-2">Suspicious Vehicle / Kendaraan Mencurigakan</td></tr>
                                         <tr><td class="px-4 py-2 font-mono font-bold text-white text-red-400 font-bold">10-38</td><td class="px-4 py-2 text-red-400 font-bold">High Risk Stop / Felony Stop</td></tr>
@@ -385,52 +450,84 @@
                             </div>
                         </div>
 
-                        <!-- Callsigns & Response -->
+                        <!-- Integrated Callsign & Response Code System -->
                         <div class="bg-lspd-dark rounded-xl shadow-lg border border-slate-700 overflow-hidden">
-                            <div class="bg-lspd-card px-4 py-3 border-b border-slate-700 flex justify-between">
-                                <h3 class="font-bold text-white"><i class="fa-solid fa-id-badge text-lspd-gold mr-2"></i> Sistem Callsign</h3>
-                                <h3 class="font-bold text-white"><i class="fa-solid fa-car-on text-lspd-gold mr-2"></i> Response Code</h3>
+                            <div class="bg-lspd-card px-4 py-3 border-b border-slate-700">
+                                <h3 class="font-bold text-white"><i class="fa-solid fa-id-badge text-lspd-gold mr-2"></i> Sistem Sandi Callsign & Kode Respon</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Sandi Callsign digunakan untuk identifikasi unit saat komunikasi radio dan dispatch.</p>
                             </div>
-                            <div class="p-4 grid grid-cols-2 gap-4">
-                                <div class="space-y-2 text-xs">
-                                    <div class="bg-lspd-navy p-1.5 rounded border border-slate-600"><span class="text-lspd-gold font-bold">STAFF</span> High Command</div>
-                                    <div class="bg-lspd-navy p-1.5 rounded border border-slate-600"><span class="text-lspd-gold font-bold">VICTOR</span> Command Staff</div>
-                                    <div class="bg-lspd-navy p-1.5 rounded border border-slate-600"><span class="text-lspd-gold font-bold">ADAM</span> Berpasangan (2 Officer)</div>
-                                    <div class="bg-lspd-navy p-1.5 rounded border border-slate-600"><span class="text-lspd-gold font-bold">LINCOLN</span> Solo Patrol (1 Officer)</div>
-                                    <div class="bg-lspd-navy p-1.5 rounded border border-slate-600"><span class="text-lspd-gold font-bold">MARY</span> Unit Motor (Patroli Roda 2)</div>
-                                    <div class="bg-lspd-navy p-1.5 rounded border border-slate-600"><span class="text-lspd-gold font-bold">AIR</span> Helikopter (ASD Support)</div>
+                            <div class="p-4 space-y-4">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-xs text-left">
+                                        <thead>
+                                            <tr class="border-b border-slate-700 bg-slate-800">
+                                                <th class="px-2 py-1.5 font-bold text-lspd-gold">Callsign</th>
+                                                <th class="px-2 py-1.5 font-bold text-lspd-gold">Unit Assignment / Deskripsi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-slate-300">
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">STAFF</td><td class="px-2 py-1.5">High Command</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">VICTOR</td><td class="px-2 py-1.5">Command Staff</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">ADAM</td><td class="px-2 py-1.5">Supervisor / NCO - Berpasangan (2 Officer)</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">LINCOLN</td><td class="px-2 py-1.5">Supervisor / NCO - Solo Patrol (1 Officer)</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">HENRY</td><td class="px-2 py-1.5">Interceptor Unit</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">GOLF</td><td class="px-2 py-1.5">Interceptor High Command</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">MARY</td><td class="px-2 py-1.5">Unit Motor (Patroli Roda 2)</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">DAVID</td><td class="px-2 py-1.5">Metro Unit</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">BEAST</td><td class="px-2 py-1.5">Bearcat Unit</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">NORA</td><td class="px-2 py-1.5">K9 Unit</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">AIR</td><td class="px-2 py-1.5">Air Support Division (Helikopter)</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">AIR-STAFF</td><td class="px-2 py-1.5">Air Support High Command</td></tr>
+                                            <tr><td class="px-2 py-1.5 font-bold text-white">GEORGE</td><td class="px-2 py-1.5">Detective Unit</td></tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="text-xs text-slate-300 space-y-3">
-                                    <p><strong class="text-white">Code 1:</strong> Non-emergency. Patroli normal, patuhi aturan lalin.</p>
-                                    <p><strong class="text-white">Code 2:</strong> Emergency ringan. Rotator nyala, sirine mati (Mendekati TKP senyap).</p>
-                                    <p><strong class="text-red-400">Code 3:</strong> Emergency penuh. Rotator & Sirine aktif (Prioritas penangkapan/laka).</p>
-                                    <p><strong class="text-white">Code 4:</strong> Situasi aman terkendali, tidak butuh backup tambahan.</p>
-                                    <p><strong class="text-white">Code 6:</strong> Out of vehicle (Mulai investigasi di TKP luar mobil).</p>
+                                <div class="border-t border-slate-700 pt-3">
+                                    <h4 class="text-xs font-bold text-lspd-gold mb-2">Kode Respon Lapangan (Response Code)</h4>
+                                    <div class="text-[11px] text-slate-300 space-y-2">
+                                        <p><strong class="text-white">Code 1:</strong> Non-emergency. Patroli normal, wajib mematuhi aturan lalu lintas.</p>
+                                        <p><strong class="text-white">Code 2:</strong> Emergency ringan. Lampu rotator menyala, sirine mati (Pendekatan senyap).</p>
+                                        <p><strong class="text-red-400">Code 3:</strong> Emergency penuh. Lampu rotator & sirine aktif (Respons darurat prioritas).</p>
+                                        <p><strong class="text-white">Code 4:</strong> Situasi aman terkendali, tidak membutuhkan backup tambahan.</p>
+                                        <p><strong class="text-white">Code 6:</strong> Out of vehicle (Memulai investigasi di luar mobil patroli).</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pursuit & PIT Procedures -->
+                        <!-- Searchable Radio Abbreviations -->
                         <div class="bg-lspd-dark rounded-xl shadow-lg border border-slate-700 overflow-hidden">
                             <div class="bg-lspd-card px-4 py-3 border-b border-slate-700">
-                                <h3 class="font-bold text-white"><i class="fa-solid fa-truck-fast text-red-400 mr-2"></i> Pursuit & P.I.T Procedure</h3>
+                                <h3 class="font-bold text-white"><i class="fa-solid fa-language text-lspd-gold mr-2"></i> Radio Abbreviations</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Daftar terminologi penting penegakan hukum (LEO) di radio.</p>
                             </div>
-                            <div class="p-4 space-y-4 text-sm text-slate-300 h-48 overflow-y-auto">
-                                <div>
-                                    <h4 class="text-lspd-gold font-bold mb-1">Pursuit Procedure (Prosedur Pengejaran)</h4>
-                                    <ul class="list-disc pl-5 space-y-1 text-xs">
-                                        <li><strong class="text-white">Primary Unit:</strong> Menempel aman di belakang target, fokus mengemudi penuh, tidak boleh call-out di radio.</li>
-                                        <li><strong class="text-white">Secondary Unit:</strong> Mengatur komunikasi radio, mengumumkan arah/jalan secara konsisten agar unit lain mengepung.</li>
-                                        <li><strong class="text-white">Alternate Unit:</strong> Melakukan cut-off rute lajur depan suspect & memasang Spike Strip di jalan.</li>
-                                    </ul>
-                                </div>
-                                <div class="border-t border-slate-600 pt-3">
-                                    <h4 class="text-red-400 font-bold mb-1">P.I.T (Precision Immobilization Technique)</h4>
-                                    <p class="text-xs mb-2">Teknik menghentikan paksa mobil buron dengan menyenggol bumper belakang samping agar tergelincir.</p>
-                                    <ul class="list-disc pl-5 space-y-1 text-xs">
-                                        <li>Hanya boleh dilakukan atas koordinasi / instruksi langsung **Incident Commander (IC)** atau Sergeant.</li>
-                                        <li>Kecepatan aman pelaksanaan PIT adalah **40 - 55 MPH**.</li>
-                                        <li>Dilarang keras melakukan PIT di dekat jembatan, lereng bukit curam, atau area padat warga sipil.</li>
+                            <div class="p-4">
+                                <input type="text" id="abbreviation-search" placeholder="Cari istilah (Contoh: BOLO, DUI, PIT)..." class="w-full bg-slate-800 border border-slate-600 text-white text-xs px-3 py-2 rounded focus:border-lspd-gold focus:outline-none mb-3" oninput="filterAbbreviations()">
+                                <div class="h-48 overflow-y-auto overflow-x-auto pr-1">
+                                    <ul id="abbreviation-list" class="space-y-2 text-xs text-slate-300">
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">ADW</strong> - Assault with a Deadly Weapon (Penyerangan dengan Senjata Mematikan)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">ALS</strong> - Advanced Life Support (Bantuan Hidup Lanjutan)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">ASAP</strong> - As Soon As Possible (Secepat Mungkin)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">BLS</strong> - Basic Life Support (Bantuan Hidup Dasar)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">BOLO</strong> - Be On the Look Out (DPO / Kendaraan Buron)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">CCW</strong> - Carrying a Concealed Weapon (Membawa Senjata Api Tersembunyi)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">DOA</strong> - Dead On Arrival (Meninggal Saat Tiba di Lokasi)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">DOB</strong> - Date of Birth (Tanggal Lahir)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">DOC</strong> - Department of Corrections (Petugas Penjara / Lapas)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">DUI</strong> - Driving Under the Influence (Mengemudi dalam Pengaruh Alkohol/Narkoba)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">EMS</strong> - Emergency Medical Services (Petugas Medis / Ambulans)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">FTO</strong> - Field Training Officer (Officer Pembimbing Lapangan)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">GOV</strong> - Government (Instansi Pemerintahan)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">GSW</strong> - Gun Shot Wound (Luka Tembak)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">LVC</strong> - Lost Visual Contact (Kehilangan Kontak Visual dengan Target)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">LEO</strong> - Law Enforcement Officer (Aparat Penegak Hukum)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">LOS</strong> - Length of Service (Masa Bakti Tugas)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">MDT</strong> - Mobile Data Terminal (Komputer Data Polisi)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">PIT</strong> - Precision Immobilization Technique (Teknik Pelumpuhan Kendaraan)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">POV</strong> - Privately-Owned Vehicle (Kendaraan Pribadi Sipil)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">R&U</strong> - Read and Understand (Membaca dan Memahami Regulasi)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">SIW</strong> - Standard-Issue Weapon (Senjata Dinas Standar LEO)</li>
+                                        <li class="p-1.5 bg-slate-900/50 rounded border border-slate-800"><strong class="text-lspd-gold">VCB</strong> - Visual Contact Broken (Kontak Visual dengan Target Terputus)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -453,7 +550,7 @@
                 </div>
 
                 <p class="text-slate-300 mb-6 bg-lspd-dark p-4 rounded-lg border-l-4 border-lspd-gold">
-                    SOP Taktis wajib dipatuhi untuk memastikan keamanan Officer dan masyarakat. Pelanggaran SOP dapat berakibat fatal secara operasional maupun administratif (Strike).
+                    SOP Taktis wajib dipatuhi untuk memastikan keamanan Officer dan masyarakat. Pelanggaran SOP dapat berakibat fatal secara operasional maupun administratif (Pemberian sanksi Strike).
                 </p>
 
                 <div class="space-y-4">
@@ -482,9 +579,9 @@
                                     <h4 class="text-lspd-gold font-bold mb-1">3) Dekati Kendaraan</h4>
                                     <ul class="list-disc pl-5 space-y-1 text-slate-400">
                                         <li>Turun dari mobil, jalan di sisi kiri menuju pintu sopir.</li>
-                                        <li>Tunjukkan badge polisi dan perkenalkan diri.</li>
+                                        <li>Tunjukkan badge polisi and perkenalkan diri.</li>
                                         <li>Minta ID & SIM. Jika menolak kasih ID, jelaskan alasan stop (contoh: speeding, broken tail light, dll).</li>
-                                        <li>Jika memberi ID & SIM, lanjut to tahap berikutnya.</li>
+                                        <li>Jika memberi ID & SIM, lanjut ke tahap berikutnya.</li>
                                     </ul>
                                 </div>
                                 <hr class="border-slate-700">
@@ -533,7 +630,7 @@
                                     <ul class="list-disc pl-5 text-xs text-slate-400 space-y-1">
                                         <li>Unit Backup 1 di kiri belakang kendaraan tersangka.</li>
                                         <li>Unit Backup 2 di kanan belakang kendaraan tersangka.</li>
-                                        <li>Unit Utama (Anda) berada di tengah belakang membentuk perimeter *V-Block*.</li>
+                                        <li>Unit Utama (Anda) berada di tengah belakang forming perimeter *V-Block*.</li>
                                     </ul>
                                 </div>
                                 <hr class="border-slate-700">
@@ -562,7 +659,7 @@
                                 </div>
                                 <hr class="border-slate-700">
                                 <div>
-                                    <h4 class="text-red-400 font-bold mb-1">7) Proses Tersangka</h4>
+                                    <h4 class="text-red-400 font-bold mb-1">7) Process Tersangka</h4>
                                     <p class="text-slate-400">Bawa tersangka ke markas kepolisian terdekat <strong class="text-white">(Alta/MRPD)</strong> untuk diproses secara hukum (Mugshot, Interogasi, denda/jail sesuai draf dakwaan).</p>
                                 </div>
                             </div>
@@ -578,7 +675,7 @@
                         <div class="accordion-content bg-lspd-navy">
                             <div class="p-6 text-slate-300 space-y-3 text-sm">
                                 <ul class="list-decimal pl-5 space-y-2">
-                                    <li>Lakukan pemantauan terhadap aktivitas transaksi ilegal yang mencurigakan di area laporan</li>
+                                    <li>Lakukan pemantauan terhadap aktivitas transaksi ilegal yang mencurigakan di area laporan.</li>
                                     <li>Lakukan interogasi lisan di tempat & geledah (<i>frisk</i>) subjek untuk menemukan bukti kepemilikan narkotika atau uang haram.</li>
                                 </ul>
                                 <p class="text-red-400 font-bold mt-2">※ EMERGENCY UPDATE: Apabila tersangka melarikan diri menggunakan kendaraan/kaki saat hendak disergap, situasi langsung berganti status menjadi pengejaran aktif 10-57 (Pursuit). Segera laporkan ke dispatch di radio untuk meminta bantuan penuh (10-78).</p>
@@ -598,13 +695,182 @@
                                     <li>Laporkan situasi <strong class="text-red-400 font-bold">10-71</strong>, tetapkan Code 3 respon darurat untuk seluruh unit di kota.</li>
                                     <li><strong>Dilarang keras</strong> unit pertama langsung menerobos masuk ke area baku tembak. Keselamatan Officer prioritas mutlak.</li>
                                     <li>Tunggu di perimeter luar. Bentuk barikade jalan agar warga sipil yang tidak tahu tidak masuk ke zona peluru (Kill Zone).</li>
-                                    <li>Setelah bantuan datang dan situasi mereda, mulai lakukan sterilisasi dan pencarian bukti (*search*) di TKP. Jika menemukan suspect tergeletak, segera lakukan evakuasi medis and bawa ke **Sector A (Alta/MRPD)**. <strong class="text-red-400">Pastikan untuk melakukan uji GSR (Gunshot Residue) dan mengamankan bukti senjata (Take Evidence) terlebih dahulu!</strong></li>
+                                    <li>Setelah bantuan datang dan situasi mereda, mulai lakukan sterilisasi dan pencarian bukti (*search*) di TKP. Jika menemukan suspect tergeletak, segera lakukan evakuasi medis dan bawa ke **Sector A (Alta/MRPD)**. <strong class="text-red-400">Pastikan untuk melakukan uji GSR (Gunshot Residue) dan mengamankan bukti senjata (Take Evidence) terlebih dahulu!</strong></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Body Cam SOP Section (Additive Addition) -->
+                    <!-- Robbery Response Procedure -->
+                    <div class="bg-lspd-dark border border-slate-700 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full px-6 py-4 flex justify-between items-center hover:bg-lspd-card transition focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-lg text-white"><i class="fa-solid fa-mask text-red-400 mr-3"></i>Prosedur Respon Robbery (Perampokan)</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content bg-lspd-navy">
+                            <div class="p-6 text-slate-300 space-y-4 text-sm">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Persyaratan Unit Patroli</h4>
+                                    <p class="text-slate-400">Unit patroli (<span class="text-white font-bold">ADAM / ROBERT</span>) maksimal terdiri dari tiga officer demi efisiensi taktis.</p>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Tanggung Jawab First Responder (Unit Pertama Tiba)</h4>
+                                    <p class="text-slate-400 mb-2">Saat tiba pertama kali di TKP perampokan:</p>
+                                    <ul class="list-disc pl-5 text-xs text-slate-400 space-y-1 mb-2">
+                                        <li>Nyatakan status <strong class="text-white">10-23 (Tiba di Lokasi)</strong> ke Dispatch.</li>
+                                        <li>Laporkan kondisi visual awal dan jumlah perkiraan tersangka jika terpantau.</li>
+                                        <li>Bangun perimeter pengamanan awal (*containment*) di area luar TKP.</li>
+                                    </ul>
+                                    <p class="text-xs text-slate-400">Contoh Laporan Radio:</p>
+                                    <blockquote class="bg-slate-800 p-2 rounded text-xs font-mono text-white">"Central, ini [Callsign] merespon ke [Jenis Robbery] di [Lokasi]."</blockquote>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Negosiasi</h4>
+                                    <ul class="list-disc pl-5 text-xs text-slate-400 space-y-1">
+                                        <li><strong class="text-white">Jika ada Sandera (Hostage):</strong> Mulai negosiasi taktis untuk menjamin keselamatan sandera. Tunggu keputusan dan instruksi dari Incident Commander (IC).</li>
+                                        <li><strong class="text-white">Jika TIDAK ada Sandera:</strong> Polisi diizinkan melakukan tindakan penerobosan langsung (*breach-in*) sesuai kesepakatan taktis dan aturan Robbery Matrix.</li>
+                                    </ul>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Laporan Dispatch & Penetapan TAC</h4>
+                                    <p class="text-slate-400">Setelah komando diambil alih oleh IC, panggilan formal dispatch harus dibuat dan alokasi saluran TAC radio ditetapkan. Saluran TAC ini wajib disesuaikan dengan jumlah kendaraan tersangka yang berupaya melarikan diri.</p>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Transisi Menuju Pengejaran (Pursuit Transition)</h4>
+                                    <p class="text-slate-400">Ketika tersangka mulai melarikan diri dari TKP menggunakan kendaraan, langsung ubah mode menjadi Prosedur Pursuit (Pengejaran). Unit Primary dan Secondary wajib ditunjuk seketika dan batas maksimal unit di lapangan harus dipatuhi dengan ketat.</p>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Penanganan Kendaraan Tersangka Ganda</h4>
+                                    <ul class="list-disc pl-5 text-xs text-slate-400 space-y-1">
+                                        <li><strong class="text-white">1 Kendaraan Tersangka:</strong> Dibatasi maksimal <strong class="text-yellow-400 font-bold">4-5 unit</strong> pengejar.</li>
+                                        <li><strong class="text-white">2 Kendaraan Tersangka:</strong> Diperbolehkan hingga <strong class="text-yellow-400 font-bold">8-10 unit</strong> pengejar (dipecah menjadi dua rombongan).</li>
+                                        <li><strong class="text-white">Lebih dari 2 Kendaraan:</strong> Unit tambahan disesuaikan secara proporsional berdasarkan diskresi mutlak dari Incident Commander.</li>
+                                    </ul>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Prosedur VCB (Visual Contact Broken)</h4>
+                                    <p class="text-slate-400">Apabila salah satu kendaraan buronan mengalami status VCB (kehilangan kontak visual), unit Primary diperbolehkan mengalihkan rute untuk membantu unit pengejaran aktif lainnya pada insiden yang sama. Unit pendukung yang tidak mendapatkan target harus segera disengage (mundur) dan kembali bersiap untuk patroli kota normal.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pursuit Procedure -->
+                    <div class="bg-lspd-dark border border-slate-700 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full px-6 py-4 flex justify-between items-center hover:bg-lspd-card transition focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-lg text-white"><i class="fa-solid fa-truck-fast text-blue-400 mr-3"></i>Prosedur Pursuit (Pengejaran)</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content bg-lspd-navy">
+                            <div class="p-6 text-slate-300 space-y-4 text-sm">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Batasan Jumlah Unit</h4>
+                                    <p class="text-slate-400 mb-2">Jumlah maksimal unit aktif yang diperbolehkan di dalam iring-iringan pengejaran adalah <strong class="text-white">4 - 5 unit</strong>, dengan rincian formasi:</p>
+                                    <ul class="list-disc pl-5 text-xs text-slate-400 space-y-1">
+                                        <li><strong class="text-blue-300">2 Unit Interceptor (Henry / Golf):</strong> Wajib berada di paling depan sebagai unit pengambil keputusan.</li>
+                                        <li><strong class="text-slate-300">3 Unit Patroli Dasar (Basic / Adam / Lincoln):</strong> Bertindak sebagai unit pendukung di barisan belakang.</li>
+                                    </ul>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Dukungan Udara & Unit Khusus</h4>
+                                    <p class="text-slate-400">Dalam situasi perampokan tertentu, Incident Commander (IC) dapat meminta otorisasi unit tambahan berupa <strong class="text-white">Unit Motor (MARY)</strong> atau <strong class="text-white text-blue-400">Air Support (AIR)</strong>. Apabila AIR atau MARY dimasukkan ke dalam barisan aktif, maka salah satu unit pengejar dasar yang sudah ada sebelumnya wajib mengundurkan diri agar total unit di lapangan tetap dalam batas regulasi.</p>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Tanggung Jawab Unit Utama</h4>
+                                    <ul class="list-disc pl-5 text-xs text-slate-400 space-y-2">
+                                        <li><strong class="text-white">Primary Unit (Henry / Unit Paling Depan):</strong> Bertanggung jawab penuh mempertahankan kontak visual dengan ekor target. Fokus kemudi 100% aman dan dilarang melakukan call-out di radio demi menjaga konsentrasi berkendara.</li>
+                                        <li><strong class="text-white">Secondary Unit (Unit Kedua):</strong> Berfungsi sebagai navigator utama di radio, bertugas mengumumkan arah mata angin, nama persimpangan jalan, dan dinamika laju suspect agar unit perimeter dapat melakukan pemotongan lajur di depan.</li>
+                                    </ul>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Kategori Pengejaran: Clean Pursuit vs Hot Pursuit</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                        <div class="bg-blue-950/40 p-3 rounded border border-blue-900">
+                                            <strong class="text-blue-400 block mb-1">Clean Pursuit (Normal)</strong>
+                                            <p class="text-xs text-slate-300">Target mengemudi dalam batas kendali logis, tidak melompati bukit secara berlebihan, dan tidak sengaja menabrakkan diri untuk mencelakai polisi.</p>
+                                        </div>
+                                        <div class="bg-red-950/40 p-3 rounded border border-red-900">
+                                            <strong class="text-red-400 block mb-1">Hot Pursuit (Eskalasi Tinggi)</strong>
+                                            <p class="text-xs text-slate-300">Pengejaran berlangsung lebih dari 10 menit, suspect melompati jembatan/bukit berkali-kali untuk merusak ban mobil, mengemudi di area pedestrian padat, atau menabrakkan kendaraan dinas secara ofensif.</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 mt-2">※ Pedoman Toleransi: Tersangka hanya ditoleransi melakukan 1 kali lompatan tidak logis. Lompatan berulang akan langsung mengubah status taktis pengejaran menjadi Hot Pursuit.</p>
+                                </div>
+                                <hr class="border-slate-700">
+                                <div>
+                                    <h4 class="text-lspd-gold font-bold mb-1">Otorisasi PIT (Precision Immobilization Technique)</h4>
+                                    <p class="text-slate-400">Menebas ekor mobil buron atau PIT hanya boleh dilaksanakan atas otorisasi verbal dari Incident Commander (IC) atau Sersan yang memimpin operasi. PIT diizinkan apabila pengejaran telah berlangsung di atas 10 menit, tidak ada sandera hidup di dalam kendaraan tersangka, serta kondisi jalan dinilai aman dari warga sipil.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PIT Procedure -->
+                    <div class="bg-lspd-dark border border-slate-700 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full px-6 py-4 flex justify-between items-center hover:bg-lspd-card transition focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-lg text-white"><i class="fa-solid fa-rotate-left text-orange-400 mr-3"></i>Prosedur P.I.T (Precision Immobilization Technique)</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content bg-lspd-navy">
+                            <div class="p-6 text-slate-300 space-y-4 text-sm">
+                                <div>
+                                    <p class="text-slate-400">
+                                        PIT (Pursuit Intervention Technique) adalah manuver taktis yang terkendali dengan menempelkan bumper depan samping mobil polisi ke ban belakang samping mobil buron untuk menghentikan pelarian secara cepat.
+                                    </p>
+                                </div>
+                                
+                                <div class="flex justify-center bg-slate-900/50 p-4 rounded-lg border border-slate-700 my-2">
+                                    <div class="text-center">
+                                        <img src="https://i.imgur.com/iZHFEAm.png" alt="Ilustrasi Manuver PIT" class="max-w-full h-auto rounded border border-slate-600 shadow-md">
+                                        <p class="text-xs text-slate-400 mt-2 italic">Ilustrasi Titik Kontak Sentuhan Manuver PIT</p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <h4 class="text-lspd-gold font-bold text-base mb-2">Langkah Pelaksanaan Manuver PIT:</h4>
+                                    <div class="relative pl-6 space-y-3 text-xs text-slate-300">
+                                        <div class="absolute left-1.5 top-1 bottom-1 w-0.5 bg-slate-600"></div>
+                                        <div class="relative">
+                                            <div class="absolute -left-[21px] w-4 h-4 bg-slate-800 border border-lspd-gold rounded-full flex items-center justify-center font-bold text-[9px] text-white">1</div>
+                                            <p><strong>Penyelarasan Posisi:</strong> Sejajarkan bumper depan samping kendaraan polisi dengan bumper/quarter-panel ban belakang kendaraan tersangka.</p>
+                                        </div>
+                                        <div class="relative">
+                                            <div class="absolute -left-[21px] w-4 h-4 bg-slate-800 border border-lspd-gold rounded-full flex items-center justify-center font-bold text-[9px] text-white">2</div>
+                                            <p><strong>Kontak Fisik Terkendali:</strong> Lakukan kontak fisik halus secara sengaja pada bagian samping ban belakang target.</p>
+                                        </div>
+                                        <div class="relative">
+                                            <div class="absolute -left-[21px] w-4 h-4 bg-slate-800 border border-lspd-gold rounded-full flex items-center justify-center font-bold text-[9px] text-white">3</div>
+                                            <p><strong>Akselerasi Konstan:</strong> Tekan pedal gas secara konstan ke arah sisi mobil tersangka untuk memutar poros kendalinya.</p>
+                                        </div>
+                                        <div class="relative">
+                                            <div class="absolute -left-[21px] w-4 h-4 bg-slate-800 border border-lspd-gold rounded-full flex items-center justify-center font-bold text-[9px] text-white">4</div>
+                                            <p><strong>Spin Out:</strong> Kendaraan tersangka akan kehilangan traksi roda belakang dan berputar 180 derajat hingga mesin mati.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-900/60 p-4 rounded border border-slate-700">
+                                    <h4 class="text-white font-bold text-xs mb-2">⚠️ Catatan Penting Penahanan:</h4>
+                                    <ul class="list-disc pl-5 text-xs text-slate-400 space-y-1">
+                                        <li>Manuver PIT tidak otomatis mengakhiri pengejaran secara instan.</li>
+                                        <li>Unit cadangan (Backup) wajib segera bergerak masuk mengurung mobil target (*vehicle pinning*).</li>
+                                        <li>Kecepatan ideal pengerjaan PIT yang aman bagi keselamatan berkendara berkisar antara <strong>40 hingga 55 MPH</strong>.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Cam SOP Section -->
                     <div class="bg-lspd-dark border border-slate-700 rounded-xl overflow-hidden">
                         <button class="accordion-button w-full px-6 py-4 flex justify-between items-center hover:bg-lspd-card transition focus:outline-none" onclick="toggleAccordion(this)">
                             <span class="font-bold text-lg text-white"><i class="fa-solid fa-video text-blue-400 mr-3"></i>Prosedur & Integrasi Body Cam (ShareX & FiveManage)</span>
@@ -912,39 +1178,42 @@
 
                 <!-- NEW SECTION: SPECIAL BARRICADE RULES -->
                 <div id="special-barricade" class="mb-8">
-                    <h3 class="text-xl font-bold text-lspd-gold mb-6 border-b border-slate-700 pb-2 uppercase tracking-wide">C. Special Barricade Rules</h3>
+                    <h3 class="text-xl font-bold text-lspd-gold mb-6 border-b border-slate-700 pb-2 uppercase tracking-wide">C. Ketentuan Barricade & Tactical Rules</h3>
                     
                     <div class="space-y-4">
                         <div class="bg-lspd-dark border border-slate-700 rounded-xl overflow-hidden shadow-lg border-l-4 border-l-red-500">
                             <button class="accordion-button w-full px-6 py-4 flex justify-between items-center hover:bg-lspd-card transition focus:outline-none" onclick="toggleAccordion(this)">
-                                <span class="font-bold text-lg text-white"><i class="fa-solid fa-shield-virus text-red-400 mr-3"></i>Barricade & Tactical Rules</span>
+                                <span class="font-bold text-lg text-white"><i class="fa-solid fa-shield-virus text-red-400 mr-3"></i>Ketentuan Barricade & Tactical Rules</span>
                                 <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
                             </button>
                             <div class="accordion-content bg-lspd-navy">
                                 <div class="p-6 text-slate-300 space-y-4 text-sm">
                                     
+                                    <!-- Rule Block 1 -->
                                     <div class="bg-slate-800/50 p-4 rounded border-l-4 border-lspd-gold">
-                                        <h4 class="text-white font-bold mb-2">If the number of officers is lower than the number of badside members during a barricade situation, officers are authorized to:</h4>
+                                        <h4 class="text-white font-bold mb-2">Jika jumlah officer lebih sedikit dari badside dalam situasi barricade, maka polisi berhak:</h4>
                                         <ul class="list-disc pl-5 text-slate-300 space-y-1">
-                                            <li>Use weapons <strong class="text-lspd-gold">one class higher</strong> than the badside</li>
-                                            <li>Deploy <strong class="text-lspd-gold">one helicopter</strong></li>
+                                            <li>Menggunakan senjata <strong class="text-lspd-gold">1 level di atas</strong> badside</li>
+                                            <li>Menggunakan <strong class="text-lspd-gold">1 helikopter</strong></li>
                                         </ul>
                                     </div>
 
+                                    <!-- Rule Block 2 -->
                                     <div class="bg-slate-800/50 p-4 rounded border-l-4 border-blue-400">
-                                        <h4 class="text-white font-bold mb-2">If a barricade situation occurs outside the 5-block perimeter, officers are authorized to:</h4>
+                                        <h4 class="text-white font-bold mb-2">Jika situasi barricade terjadi di luar 5 blok, polisi berhak:</h4>
                                         <ul class="list-disc pl-5 text-slate-300 space-y-1">
-                                            <li><strong class="text-blue-300">All-in</strong> officer response</li>
-                                            <li>Weapon class <strong class="text-blue-300">remains unchanged</strong></li>
+                                            <li><strong class="text-blue-300">All-in</strong> officer</li>
+                                            <li>Class senjata <strong class="text-blue-300">tidak dinaikkan</strong></li>
                                         </ul>
                                     </div>
 
+                                    <!-- Rule Block 3 -->
                                     <div class="bg-slate-800/50 p-4 rounded border-l-4 border-red-500">
-                                        <h4 class="text-white font-bold mb-2">If badside members establish a One Way setup or Monkey Stair setup, officers are authorized to:</h4>
+                                        <h4 class="text-white font-bold mb-2">Jika terjadi setup One Way / Tangga Monyet, polisi berhak:</h4>
                                         <ul class="list-disc pl-5 text-slate-300 space-y-1">
-                                            <li>Use weapons <strong class="text-red-400">one class higher</strong> than the badside</li>
-                                            <li><strong class="text-red-400">All-in</strong> officer response</li>
-                                            <li>Deploy <strong class="text-red-400">one helicopter</strong></li>
+                                            <li>Menggunakan senjata <strong class="text-red-400">1 level di atas</strong> badside</li>
+                                            <li><strong class="text-red-400">All-in</strong> officer</li>
+                                            <li>Menggunakan <strong class="text-red-400">1 helikopter</strong></li>
                                         </ul>
                                     </div>
 
@@ -968,7 +1237,7 @@
                             <i class="fa-solid fa-shield-halved mr-2 text-blue-400"></i> Police Weapons
                         </button>
                         <button onclick="document.getElementById('criminal-weapons').scrollIntoView({behavior:'smooth'})" class="px-4 py-2 bg-lspd-dark border border-slate-600 rounded-lg text-sm font-bold text-slate-300 hover:text-white hover:border-red-500 transition flex items-center shadow-md">
-                            <i class="fa-solid fa-skull mr-2 text-red-400"></i> Criminal Weapons
+                            <i class="fa-solid fa-gun mr-2 text-red-400"></i> Criminal Weapons
                         </button>
                     </div>
                     <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white rounded-lg shadow transition text-xs font-bold flex items-center">
@@ -989,7 +1258,7 @@
                             <div class="bg-blue-900/40 p-3 border-b border-blue-800 text-center">
                                 <h4 class="font-bold text-white tracking-widest text-sm">CLASS 1</h4>
                             </div>
-                            <div class="p-5 flex-1">
+                            <div class="p-5 flex-1 overflow-x-auto">
                                 <ul class="list-disc pl-5 text-sm text-slate-300 space-y-2">
                                     <li>Combat Pistol</li>
                                     <li>AP Pistol</li>
@@ -1005,7 +1274,7 @@
                             <div class="bg-blue-900/40 p-3 border-b border-blue-800 text-center">
                                 <h4 class="font-bold text-white tracking-widest text-sm">CLASS 2</h4>
                             </div>
-                            <div class="p-5 flex-1">
+                            <div class="p-5 flex-1 overflow-x-auto">
                                 <ul class="list-disc pl-5 text-sm text-slate-300 space-y-2">
                                     <li>Combat PDW</li>
                                     <li>Assault SMG</li>
@@ -1026,7 +1295,7 @@
                             <div class="bg-blue-900/40 p-3 border-b border-blue-800 text-center">
                                 <h4 class="font-bold text-white tracking-widest text-sm">CLASS 3</h4>
                             </div>
-                            <div class="p-5 flex-1">
+                            <div class="p-5 flex-1 overflow-x-auto">
                                 <ul class="list-disc pl-5 text-sm text-slate-300 space-y-2">
                                     <li>Carbine Rifle MK2</li>
                                     <li>Special Carbine MK2</li>
@@ -1058,7 +1327,7 @@
                             <div class="bg-red-900/30 p-3 border-b border-red-800 text-center">
                                 <h4 class="font-bold text-white tracking-widest text-sm">CLASS 1</h4>
                             </div>
-                            <div class="p-5 flex-1">
+                            <div class="p-5 flex-1 overflow-x-auto">
                                 <ul class="list-disc pl-5 text-sm text-slate-300 space-y-2">
                                     <li>Pistol .50</li>
                                     <li>Ceramic Pistol</li>
@@ -1075,7 +1344,7 @@
                             <div class="bg-red-900/30 p-3 border-b border-red-800 text-center">
                                 <h4 class="font-bold text-white tracking-widest text-sm">CLASS 2</h4>
                             </div>
-                            <div class="p-5 flex-1">
+                            <div class="p-5 flex-1 overflow-x-auto">
                                 <ul class="list-disc pl-5 text-sm text-slate-300 space-y-2">
                                     <li>Mini SMG</li>
                                     <li>Micro SMG</li>
@@ -1096,7 +1365,7 @@
                             <div class="bg-red-900/30 p-3 border-b border-red-800 text-center">
                                 <h4 class="font-bold text-white tracking-widest text-sm">CLASS 3</h4>
                             </div>
-                            <div class="p-5 flex-1">
+                            <div class="p-5 flex-1 overflow-x-auto">
                                 <ul class="list-disc pl-5 text-sm text-slate-300 space-y-2">
                                     <li>Double Action</li>
                                     <li>Assault Rifle</li>
@@ -1233,7 +1502,7 @@
                             <div class="absolute -left-[38px] w-8 h-8 bg-lspd-navy rounded-full flex items-center justify-center border-2 border-lspd-gold text-lspd-gold font-bold z-10">1</div>
                             <div class="bg-lspd-navy p-5 rounded-lg border border-slate-600">
                                 <h4 class="text-white font-bold text-base mb-2">Penggeledahan (Frisk & Search)</h4>
-                                <p class="text-slate-400">Bawa suspect ke sel tahanan Alta/MRPD. Dokumentasikan identitas suspect (ID Card). Sita dan dokumentasikan semua barang ilegal (senjata api, narkotika, dirty money) dan barang berbahaya lainnya (seperti pisau, alat lockpick, dll) ke dalam locker barang bukti.</p>
+                                <p class="text-slate-400">Bawa suspect ke sel tahanan Alta/MRPD. Dokumentasikan identity card suspect. Sita dan dokumentasikan semua barang ilegal (senjata api, narkotika, dirty money) dan barang berbahaya lainnya (seperti pisau, alat lockpick, dll) ke dalam locker barang bukti.</p>
                             </div>
                         </div>
                         
@@ -1387,7 +1656,7 @@
                             <i class="fa-solid fa-sack-dollar text-2xl text-orange-400 mr-3"></i>
                             <h3 class="text-lg font-bold text-white">Robbery Codes</h3>
                         </div>
-                        <div class="p-5 flex-1 space-y-4 text-sm">
+                        <div class="p-5 flex-1 space-y-4 text-sm overflow-x-auto">
                             <div class="border-b border-slate-700 pb-3">
                                 <h4 class="text-lspd-gold font-bold">Type of Robbery</h4>
                                 <ul class="list-disc pl-5 text-xs text-slate-300 mt-1 space-y-1">
@@ -1420,7 +1689,7 @@
                             <i class="fa-solid fa-pills text-2xl text-purple-400 mr-3"></i>
                             <h3 class="text-lg font-bold text-white">Drug Problem</h3>
                         </div>
-                        <div class="p-5 flex-1 space-y-4 text-sm">
+                        <div class="p-5 flex-1 space-y-4 text-sm overflow-x-auto">
                             <div class="border-b border-slate-700 pb-3">
                                 <h4 class="text-purple-300 font-bold">Drug Selling Schedules</h4>
                                 <ul class="list-disc pl-5 text-xs text-slate-300 mt-1 space-y-1">
@@ -1455,7 +1724,7 @@
                             <i class="fa-solid fa-users-rays text-2xl text-red-400 mr-3"></i>
                             <h3 class="text-lg font-bold text-white">Gang Problem</h3>
                         </div>
-                        <div class="p-5 flex-1 space-y-4 text-sm">
+                        <div class="p-5 flex-1 space-y-4 text-sm overflow-x-auto">
                             <div class="border-b border-slate-700 pb-3">
                                 <h4 class="text-red-300 font-bold">Gang vs Gang (Perang Gang)</h4>
                                 <ul class="list-disc pl-5 text-xs text-slate-300 mt-1 space-y-1">
@@ -1710,7 +1979,7 @@
                             <i class="fa-solid fa-chevron-up text-lspd-gold"></i>
                         </div>
                         <div class="w-full md:w-1/2 pl-0 md:pl-8">
-                            <div class="bg-lspd-dark rounded-xl p-6 border border-slate-600 shadow-lg group-hover:border-lspd-gold transition duration-300 text-left">
+                            <div class="bg-lspd-dark rounded-xl p-6 border border-slate-600 shadow-lg group-hover:border-lspd-gold transition duration-300 text-left overflow-x-auto">
                                 <h3 class="text-xl font-bold text-white mb-1">Rookie <i class="fa-solid fa-arrow-right text-sm text-slate-500 mx-2"></i> Police Officer II</h3>
                                 <p class="text-xs text-lspd-gold font-semibold uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Basic Patrol Qualification</p>
                                 <p class="text-sm font-semibold text-yellow-400 mb-2"><i class="fa-solid fa-clipboard mr-1"></i> Syarat Administrasi: Minimal 5 Patrol Report</p>
@@ -1726,14 +1995,14 @@
                     <!-- Step 2: PO II to PO III -->
                     <div class="relative z-10 flex flex-col md:flex-row items-center w-full group">
                         <div class="w-full md:w-1/2 pr-0 md:pr-8 text-left md:text-right mb-4 md:mb-0 order-2 md:order-1">
-                            <div class="bg-lspd-dark rounded-xl p-6 border border-slate-600 shadow-lg group-hover:border-lspd-gold transition duration-300 text-left md:text-right">
+                            <div class="bg-lspd-dark rounded-xl p-6 border border-slate-600 shadow-lg group-hover:border-lspd-gold transition duration-300 text-left md:text-right overflow-x-auto">
                                 <h3 class="text-xl font-bold text-white mb-1">Police Officer II <i class="fa-solid fa-arrow-right text-sm text-slate-500 mx-2"></i> Police Officer III (FTO)</h3>
                                 <p class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-2 border-b border-slate-700 pb-1 md:border-b-0 md:pb-0">Training Authorization</p>
                                 <p class="text-sm font-semibold text-yellow-400 mb-2"><i class="fa-solid fa-clipboard mr-1"></i> Syarat Administrasi: Minimal 10 Patrol Report</p>
                                 <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4 inline-block text-left">
                                     <li>Masa kerja patroli stabil dan berdedikasi tinggi sebagai PO II.</li>
                                     <li>Menguasai teknik komunikasi taktis (Call-out Pursuit).</li>
-                                    <li>Sudah dianggap mampu untuk melatih para rookie di lapangan</li>
+                                    <li>Sudah dianggap mampu untuk melatih para rookie di lapangan.</li>
                                 </ul>
                             </div>
                         </div>
@@ -1754,7 +2023,7 @@
                             <i class="fa-solid fa-star text-purple-400"></i>
                         </div>
                         <div class="w-full md:w-1/2 pl-0 md:pl-8">
-                            <div class="bg-lspd-dark rounded-xl p-6 border border-slate-600 shadow-lg group-hover:border-purple-500 transition duration-300 text-left">
+                            <div class="bg-lspd-dark rounded-xl p-6 border border-slate-600 shadow-lg group-hover:border-purple-500 transition duration-300 text-left overflow-x-auto">
                                 <h3 class="text-xl font-bold text-white mb-1">Police Officer III <i class="fa-solid fa-arrow-right text-sm text-slate-500 mx-2"></i> Sergeant</h3>
                                 <p class="text-xs text-purple-400 font-semibold uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Supervisory Role</p>
                                 <p class="text-sm font-semibold text-yellow-400 mb-2"><i class="fa-solid fa-clipboard mr-1"></i> Syarat Administrasi: Minimal 15 Patrol Report</p>
@@ -1951,6 +2220,9 @@
                     toggleSidebar();
                 }
             }
+
+            // Recalculate scroll indicators for newly opened tab
+            setTimeout(updateAllScrollIndicators, 100);
         }
 
         // Accordion Logic
@@ -1964,6 +2236,222 @@
             } else {
                 content.style.maxHeight = null;
             }
+        }
+
+        // Live Real-time Filtering for Abbreviations
+        function filterAbbreviations() {
+            const searchVal = document.getElementById('abbreviation-search').value.toLowerCase();
+            const listItems = document.querySelectorAll('#abbreviation-list li');
+            
+            listItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchVal)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            // Update the scroll indicators when results filter dynamically
+            updateAllScrollIndicators();
+        }
+
+        // Universal Scroll Indicator System Logic
+        function updateAllScrollIndicators() {
+            const wrappers = document.querySelectorAll('.scroll-wrapper');
+            wrappers.forEach(wrapper => {
+                const container = wrapper.querySelector('.overflow-x-auto, .overflow-y-auto');
+                if (container && typeof container.updateIndicators === 'function') {
+                    container.updateIndicators();
+                }
+            });
+            const main = document.querySelector('main');
+            if (main && typeof main.updateIndicators === 'function') main.updateIndicators();
+        }
+
+        function initScrollIndicators() {
+            const scrollContainers = document.querySelectorAll('.overflow-x-auto, .overflow-y-auto');
+            
+            scrollContainers.forEach(container => {
+                // Avoid breaking root layout components
+                if (container.tagName === 'MAIN' || container.closest('#sidebar')) return;
+
+                // Prevent duplicate wrappers
+                if (container.parentElement && container.parentElement.classList.contains('scroll-wrapper')) {
+                    if (typeof container.updateIndicators === 'function') container.updateIndicators();
+                    return;
+                }
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'scroll-wrapper';
+                
+                // Transfer specific layout classes to the wrapper to prevent breaking flex/heights
+                const transferClasses = ['flex-1', 'flex-grow', 'h-full', 'max-h-[400px]', 'h-[400px]', 'h-48'];
+                let hasHeightClass = false;
+                transferClasses.forEach(cls => {
+                    if (container.classList.contains(cls)) {
+                        container.classList.remove(cls);
+                        wrapper.classList.add(cls);
+                        hasHeightClass = true;
+                    }
+                });
+
+                if (hasHeightClass) {
+                    container.classList.add('h-full', 'w-full');
+                }
+                
+                container.parentNode.insertBefore(wrapper, container);
+                wrapper.appendChild(container);
+                
+                const hasX = container.classList.contains('overflow-x-auto');
+                const hasY = container.classList.contains('overflow-y-auto');
+                
+                const indicators = {};
+
+                // --- HORIZONTAL INDICATORS ---
+                if (hasX) {
+                    const leftFade = document.createElement('div'); leftFade.className = 'scroll-fade-left opacity-0';
+                    const rightFade = document.createElement('div'); rightFade.className = 'scroll-fade-right opacity-0';
+                    
+                    const leftInd = document.createElement('div'); leftInd.className = 'scroll-indicator scroll-left opacity-0 cursor-pointer';
+                    leftInd.innerHTML = '<div class="scroll-indicator-btn hover:bg-slate-700 transition"><i class="fa-solid fa-chevron-left"></i></div>';
+                    leftInd.onclick = () => container.scrollBy({ left: -200, behavior: 'smooth' });
+                    
+                    const rightInd = document.createElement('div'); rightInd.className = 'scroll-indicator scroll-right opacity-0 cursor-pointer';
+                    rightInd.innerHTML = '<div class="scroll-indicator-btn hover:bg-slate-700 transition"><i class="fa-solid fa-chevron-right"></i></div>';
+                    rightInd.onclick = () => container.scrollBy({ left: 200, behavior: 'smooth' });
+                    
+                    const helper = document.createElement('div'); helper.className = 'scroll-helper hidden';
+                    helper.innerText = '← Geser untuk melihat lebih banyak →';
+                    
+                    wrapper.appendChild(leftFade); wrapper.appendChild(rightFade);
+                    wrapper.appendChild(leftInd); wrapper.appendChild(rightInd);
+                    wrapper.parentNode.insertBefore(helper, wrapper.nextSibling);
+
+                    indicators.x = { leftInd, rightInd, leftFade, rightFade, helper };
+                }
+
+                // --- VERTICAL INDICATORS ---
+                if (hasY) {
+                    const topFade = document.createElement('div'); topFade.className = 'scroll-fade-top opacity-0';
+                    const bottomFade = document.createElement('div'); bottomFade.className = 'scroll-fade-bottom opacity-0';
+
+                    const topInd = document.createElement('div'); topInd.className = 'scroll-indicator-y scroll-top opacity-0 cursor-pointer bounce-y';
+                    topInd.innerHTML = '<div class="scroll-indicator-btn-y hover:bg-slate-700 transition"><i class="fa-solid fa-chevron-up"></i></div>';
+                    topInd.onclick = () => container.scrollBy({ top: -200, behavior: 'smooth' });
+
+                    const bottomInd = document.createElement('div'); bottomInd.className = 'scroll-indicator-y scroll-bottom opacity-0 cursor-pointer bounce-y';
+                    bottomInd.innerHTML = '<div class="scroll-indicator-btn-y hover:bg-slate-700 transition"><i class="fa-solid fa-chevron-down"></i></div>';
+                    bottomInd.onclick = () => container.scrollBy({ top: 200, behavior: 'smooth' });
+
+                    wrapper.appendChild(topFade); wrapper.appendChild(bottomFade);
+                    wrapper.appendChild(topInd); wrapper.appendChild(bottomInd);
+
+                    indicators.y = { topInd, bottomInd, topFade, bottomFade };
+                }
+                
+                // --- UNIFIED UPDATE LOGIC ---
+                function updateIndicators() {
+                    if (hasX) {
+                        const { leftInd, rightInd, leftFade, rightFade, helper } = indicators.x;
+                        const maxScrollX = container.scrollWidth - container.clientWidth;
+                        if (maxScrollX > 1) {
+                            const showLeft = container.scrollLeft > 5;
+                            const showRight = container.scrollLeft < maxScrollX - 5;
+                            
+                            leftInd.style.opacity = showLeft ? '1' : '0';
+                            leftInd.style.pointerEvents = showLeft ? 'auto' : 'none';
+                            leftFade.style.opacity = showLeft ? '1' : '0';
+                            
+                            rightInd.style.opacity = showRight ? '1' : '0';
+                            rightInd.style.pointerEvents = showRight ? 'auto' : 'none';
+                            rightFade.style.opacity = showRight ? '1' : '0';
+                            
+                            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                                helper.classList.remove('hidden');
+                            } else {
+                                helper.classList.add('hidden');
+                            }
+                        } else {
+                            leftInd.style.opacity = '0'; rightInd.style.opacity = '0';
+                            leftFade.style.opacity = '0'; rightFade.style.opacity = '0';
+                            leftInd.style.pointerEvents = 'none'; rightInd.style.pointerEvents = 'none';
+                            helper.classList.add('hidden');
+                        }
+                    }
+
+                    if (hasY) {
+                        const { topInd, bottomInd, topFade, bottomFade } = indicators.y;
+                        const maxScrollY = container.scrollHeight - container.clientHeight;
+                        if (maxScrollY > 1) {
+                            const showTop = container.scrollTop > 5;
+                            const showBottom = container.scrollTop < maxScrollY - 5;
+
+                            topInd.style.opacity = showTop ? '1' : '0';
+                            topInd.style.pointerEvents = showTop ? 'auto' : 'none';
+                            topFade.style.opacity = showTop ? '1' : '0';
+
+                            bottomInd.style.opacity = showBottom ? '1' : '0';
+                            bottomInd.style.pointerEvents = showBottom ? 'auto' : 'none';
+                            bottomFade.style.opacity = showBottom ? '1' : '0';
+                        } else {
+                            topInd.style.opacity = '0'; bottomInd.style.opacity = '0';
+                            topFade.style.opacity = '0'; bottomFade.style.opacity = '0';
+                            topInd.style.pointerEvents = 'none'; bottomInd.style.pointerEvents = 'none';
+                        }
+                    }
+                }
+                
+                container.updateIndicators = updateIndicators;
+                container.addEventListener('scroll', updateIndicators);
+                window.addEventListener('resize', updateIndicators);
+                
+                setTimeout(updateIndicators, 100);
+            });
+
+            setupMainGlobalScroll();
+        }
+
+        // Global Vertical Scroll System for <main>
+        function setupMainGlobalScroll() {
+            const main = document.querySelector('main');
+            if (!main || main.dataset.hasGlobalScroll) return;
+            main.dataset.hasGlobalScroll = 'true';
+
+            const topIndicator = document.createElement('div');
+            topIndicator.className = 'global-scroll-indicator scroll-top opacity-0 cursor-pointer hover:-translate-y-1 transition-all';
+            topIndicator.innerHTML = '<div class="scroll-indicator-btn-y"><i class="fa-solid fa-chevron-up"></i></div>';
+            topIndicator.onclick = () => main.scrollBy({ top: -300, behavior: 'smooth' });
+
+            const bottomIndicator = document.createElement('div');
+            bottomIndicator.className = 'global-scroll-indicator scroll-bottom opacity-0 cursor-pointer hover:translate-y-1 transition-all';
+            bottomIndicator.innerHTML = '<div class="scroll-indicator-btn-y"><i class="fa-solid fa-chevron-down"></i></div>';
+            bottomIndicator.onclick = () => main.scrollBy({ top: 300, behavior: 'smooth' });
+
+            document.body.appendChild(topIndicator);
+            document.body.appendChild(bottomIndicator);
+
+            function updateMainIndicators() {
+                const maxScrollY = main.scrollHeight - main.clientHeight;
+                if (maxScrollY > 20) {
+                    const showTop = main.scrollTop > 50;
+                    const showBottom = main.scrollTop < maxScrollY - 50;
+
+                    topIndicator.style.opacity = showTop ? '1' : '0';
+                    topIndicator.style.pointerEvents = showTop ? 'auto' : 'none';
+
+                    bottomIndicator.style.opacity = showBottom ? '1' : '0';
+                    bottomIndicator.style.pointerEvents = showBottom ? 'auto' : 'none';
+                } else {
+                    topIndicator.style.opacity = '0'; bottomIndicator.style.opacity = '0';
+                    topIndicator.style.pointerEvents = 'none'; bottomIndicator.style.pointerEvents = 'none';
+                }
+            }
+
+            main.updateIndicators = updateMainIndicators;
+            main.addEventListener('scroll', updateMainIndicators);
+            window.addEventListener('resize', updateMainIndicators);
+
+            setTimeout(updateMainIndicators, 100);
         }
 
         // Auto-Formatter for Chronology (5W + 1H)
@@ -2039,6 +2527,7 @@
             
             container.appendChild(newRow);
             generateBBCode();
+            initScrollIndicators();
         }
 
         function removeEvidenceField(buttonElement) {
@@ -2046,6 +2535,7 @@
             if (row) {
                 row.remove();
                 generateBBCode();
+                initScrollIndicators();
             }
         }
 
@@ -2106,7 +2596,7 @@
 
 [lspdsubtitle=#11224E][b]B. PATROL REPORT OFFICER[/b][/lspdsubtitle]
 [divbox=white]
-[lspdsubtitle=#11224E][b][b]First Report[/b][/b][/lspdsubtitle]
+[lspdsubtitle=#11224E][b][b]First Report[/b][/b][/lspdsubtitle>
 
 [b]Date:[/b]
 [divbox=white] ${date} [/divbox]
@@ -2149,6 +2639,13 @@ ${evidenceBBCode}
         // Initialize sequential navigation buttons on load
         injectSectionNavigation();
         updateNavigationButtons();
+        initScrollIndicators();
+
+        // Also call on window load for complete calculation security
+        window.addEventListener('load', function() {
+            initScrollIndicators();
+            updateAllScrollIndicators();
+        });
     </script>
 </body>
 </html>
